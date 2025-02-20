@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "description": "покушать",
+    "isDone": false
+  },
+  {
+    "id": 2,
+    "description": "хихоньки хахоньки",
+    "isDone": true
+  },
+  {
+    "id": 3,
+    "description": "сдать бэкенд на 5",
+    "isDone": true
+  },
+  {
+    "id": 4,
+    "description": "сходить в театр",
+    "isDone": false
+  },
+  {
+    "id": 5,
+    "description": "дочитать достоевского",
+    "isDone": false
+  },
+  {
+    "id": 6,
+    "description": "очень важное дело",
+    "isDone": false
+  }
+]

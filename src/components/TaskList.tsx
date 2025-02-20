@@ -13,8 +13,7 @@ export default function TaskList() {
     }, []);
 
     async function addTask (description: string) {
-        const response = await createTask(description);
-        const newTask: Task = response.data;
+        const newTask: Task = await createTask(description, false);
         setTasks((prev) => [...prev, newTask]);
     }
 
@@ -43,7 +42,7 @@ export default function TaskList() {
     
                 const addedTasks = await Promise.all(jsonData.map(async (task) => {
                     const response = await createTask(task.description, task.isDone); 
-                    return response.data;
+                    return response;
                 }));
     
                 setTasks((prev) => [...prev, ...addedTasks]);
@@ -73,7 +72,7 @@ export default function TaskList() {
         <>
         <SystemWindowPart 
                 uploadTasksJSON={uploadTasksJSON} 
-                downloadTasksJSON={downloadTasksJSON} 
+                downloadTasksJSON={downloadTasksJSON}
             />
 
         <div className="task-list">
