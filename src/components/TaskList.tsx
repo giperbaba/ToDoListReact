@@ -4,26 +4,29 @@ import { Task } from "../models/Task";
 import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
 import SystemWindowPart from "./SystemWindowPart";
+import { useOnline } from "./OnlineProvider";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState<Task[]>([]);
 
+    const isOnline = useOnline();
+
     useEffect(() => {
-        getTasks().then(setTasks);
-    }, []);
+        getTasks(isOnline).then(setTasks);
+    }, [isOnline]);
 
     async function addTask (description: string) {
-        const newTask: Task = await createTask(description, false);
+        const newTask: Task = await createTask(description, false, isOnline);
         setTasks((prev) => [...prev, newTask]);
     }
 
     async function displayDeleteTask(id : number) {
-        await deleteTask(id);
+        await deleteTask(id, isOnline);
         setTasks((prev) => prev.filter(tasks => tasks.id !== id));
     }
 
     async function changeTaskStatus(id: number, isDone: boolean) {
-        await updateTaskStatus(id, isDone);
+        await updateTaskStatus(id, isDone, isOnline);
         setTasks((prev) =>
             prev.map((task) =>
                 task.id === id ? { ...task, isDone } : task
@@ -41,7 +44,7 @@ export default function TaskList() {
                 const jsonData: Task[] = JSON.parse(e.target?.result as string);
     
                 const addedTasks = await Promise.all(jsonData.map(async (task) => {
-                    const response = await createTask(task.description, task.isDone); 
+                    const response = await createTask(task.description, task.isDone, isOnline); 
                     return response;
                 }));
     

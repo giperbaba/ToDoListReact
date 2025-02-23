@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
 import Clock from "./Clock";
-import { isBackendAvailable } from "../services/taskMockService";
+import React from "react";
+import { useOnline } from "./OnlineProvider";
+
 
 interface SystemWindowProps {
     uploadTasksJSON: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -8,16 +9,7 @@ interface SystemWindowProps {
 }
 
 export default function SystemWindowPart({ uploadTasksJSON, downloadTasksJSON }: SystemWindowProps) {
-    const [isOnline, setIsOnline] = useState(true);
-
-    useEffect(() => {
-        async function checkBackend() {
-            const online = await isBackendAvailable();
-            setIsOnline(online);
-        }
-
-        checkBackend();
-    }, []);
+    const isOnline = useOnline();
 
     return (
         <div className="system">
