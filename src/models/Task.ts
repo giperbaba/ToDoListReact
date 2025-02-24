@@ -3,9 +3,9 @@ export class Task {
     isDone: boolean;
     description: string;
 
-    constructor(id: number, isDone: boolean, description: string) {
+    constructor(id: number,  description: string, isDone: boolean) {
         this.id = id;
-        this.isDone = isDone;
         this.description = description;
+        this.isDone = isDone;
     }
 }

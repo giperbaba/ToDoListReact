@@ -27,6 +27,6 @@
   {
     "id": 6,
     "description": "очень важное дело",
-    "isDone": false
+    "isDone": true
   }
 ]

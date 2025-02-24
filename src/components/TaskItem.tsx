@@ -1,14 +1,14 @@
 import { Task } from '../models/Task'
-import { updateTaskDescription } from "../services/taskService";
 import { useOnline } from './OnlineProvider';
 
 interface TaskItemProps {
     task: Task;
     displayDeleteTask: (id: number) => void;
     changeTaskStatus: (id: number, isDone: boolean) => void;
+    changeTaskDescription: (id: number, description: string) => void;
 }
 
-export default function TaskItem({ task, displayDeleteTask, changeTaskStatus }: TaskItemProps) {
+export default function TaskItem({ task, displayDeleteTask, changeTaskStatus, changeTaskDescription }: TaskItemProps) {
 
     const isOnline = useOnline();
 
@@ -23,7 +23,7 @@ export default function TaskItem({ task, displayDeleteTask, changeTaskStatus }: 
                 contentEditable
                 suppressContentEditableWarning
                 className="task-description"
-                onBlur={(e) => updateTaskDescription(task.id, e.currentTarget.textContent || "новое дело", isOnline)}
+                onBlur={(e) => changeTaskDescription(task.id, e.currentTarget.textContent || "новое дело")}
             >
                 {task.description}
             </p>

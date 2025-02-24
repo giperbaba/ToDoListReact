@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTasks, createTask, deleteTask, updateTaskStatus } from "../services/taskService";
+import { getTasks, createTask, deleteTask, updateTaskStatus, updateTaskDescription } from "../services/taskService";
 import { Task } from "../models/Task";
 import TaskItem from "./TaskItem";
 import TaskForm from "./TaskForm";
@@ -18,6 +18,7 @@ export default function TaskList() {
     async function addTask (description: string) {
         const newTask: Task = await createTask(description, false, isOnline);
         setTasks((prev) => [...prev, newTask]);
+        console.log(tasks);
     }
 
     async function displayDeleteTask(id : number) {
@@ -30,6 +31,15 @@ export default function TaskList() {
         setTasks((prev) =>
             prev.map((task) =>
                 task.id === id ? { ...task, isDone } : task
+            )
+        );
+    }
+
+    async function changeTaskDescription(id: number, description: string) {
+        await updateTaskDescription(id, description, isOnline);
+        setTasks((prev) =>
+            prev.map((task) =>
+                task.id === id ? { ...task, description } : task
             )
         );
     }
@@ -81,7 +91,7 @@ export default function TaskList() {
         <div className="task-list">
             <TaskForm addTask={addTask} />
             {tasks.map((task) => (
-                <TaskItem key={task.id} task={task} displayDeleteTask={displayDeleteTask} changeTaskStatus={changeTaskStatus}/>
+                <TaskItem key={task.id} task={task} displayDeleteTask={displayDeleteTask} changeTaskStatus={changeTaskStatus} changeTaskDescription={changeTaskDescription}/>
             ))}
         </div>
         </>

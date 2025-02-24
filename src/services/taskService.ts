@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Task } from "../models/Task";
-import { isBackendAvailable, getLocalTasks, createLocalTask, updateLocalTaskStatus, updateLocalTaskDescription, deleteLocalTask } from "./taskMockService";
-import { useOnline } from "../components/OnlineProvider";
+import { getLocalTasks, createLocalTask} from "./taskMockService";
 
 const API_URL = "http://localhost:8090/api/todo_list";
 
@@ -23,21 +22,21 @@ export async function createTask(description: string, isDone: boolean = false, i
 
 export async function updateTaskStatus(id: number, isDone: boolean, isOnline: boolean) {
     if (!isOnline) {
-        return updateLocalTaskStatus(id, isDone);
+        return;
     }
     return axios.put(`${API_URL}/update/is_done/${id}`, { isDone });
 }
 
 export async function updateTaskDescription(id: number, description: string, isOnline: boolean) {
     if (!isOnline) {
-        return updateLocalTaskDescription(id, description);
+        return;
     }
     return axios.put(`${API_URL}/update/desc/${id}`, { newDescription: description });
 }
 
 export async function deleteTask(id: number, isOnline: boolean) {
     if (!isOnline) {
-        return deleteLocalTask(id);
+        return;
     }
     return axios.delete(`${API_URL}/delete/${id}`);
 }

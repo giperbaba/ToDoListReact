@@ -1,9 +1,8 @@
 import axios from "axios";
 import { Task } from "../models/Task";
-import { useState } from "react";
+import uuid from "react-uuid";
 
 const tasksMock = require("../example-tasks.json");
-
 
 const API_URL = "http://localhost:8090/api/todo_list";
 
@@ -24,28 +23,7 @@ export function getLocalTasks() {
 }
 
 export function createLocalTask(description: string, isDone: boolean = false) {
-    const newTask = new Task( localTasks.length + 2, isDone, description);
-    localTasks.push(newTask); 
+    const id = parseInt(uuid().replace(/-/g, '').slice(0, 9), 16);
+    const newTask = new Task(id , description, isDone);
     return newTask;
-}
-
-export function updateLocalTaskStatus(id: number, isDone: boolean) {
-    const task = localTasks.find((task) => task.id === id);
-    if (task) {
-        task.isDone = isDone;
-    }
-    return task;
-}
-
-export function updateLocalTaskDescription(id: number, description: string) {
-    const task = localTasks.find((task) => task.id === id);
-    if (task) {
-        task.description = description;
-    }
-    return task;
-}
-
-export function deleteLocalTask(id: number) {
-    localTasks = localTasks.filter((task) => task.id !== id);
-    return localTasks;
 }
