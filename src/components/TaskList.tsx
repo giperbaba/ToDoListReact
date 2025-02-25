@@ -34,20 +34,18 @@ export default function TaskList() {
     async function changeTaskStatus(id: number, isDone: boolean) {
         await updateTaskStatus(id, isDone, isOnline);
         setTasks((prev) => {
-            const newTasks = new Map(prev);
-            const task = newTasks.get(id);
-            if (task) newTasks.set(id, { ...task, isDone });
-            return newTasks;
+            const task = prev.get(id);
+            if (task) prev.set(id, { ...task, isDone });
+            return prev;
         });
     }
 
     async function changeTaskDescription(id: number, description: string) {
         await updateTaskDescription(id, description, isOnline);
         setTasks((prev) => {
-            const newTasks = new Map(prev);
-            const task = newTasks.get(id);
-            if (task) newTasks.set(id, { ...task, description });
-            return newTasks;
+            const task = prev.get(id);
+            if (task) prev.set(id, { ...task, description });
+            return prev;
         });
     }
 
