@@ -1,29 +1,42 @@
+import { useState } from 'react';
 import { Task } from '../models/Task'
-import { useOnline } from './OnlineProvider';
 
 interface TaskItemProps {
     task: Task;
     displayDeleteTask: (id: number) => void;
-    changeTaskStatus: (id: number, isDone: boolean) => void;
     changeTaskDescription: (id: number, description: string) => void;
+    changeTaskStatus: (id: number, isDone: boolean) => void;
 }
 
-export default function TaskItem({ task, displayDeleteTask, changeTaskStatus, changeTaskDescription }: TaskItemProps) {
+export default function TaskItem({ task, displayDeleteTask, changeTaskDescription, changeTaskStatus}: TaskItemProps) {
+    
+    const [isDone, setIsDone] = useState(task.isDone);
+    const [description, setDescription] = useState(task.description);
 
-    const isOnline = useOnline();
+    function handleCheckboxChange() {
+        const newStatus = !isDone;
+        setIsDone(newStatus);
+        changeTaskStatus(task.id, newStatus);
+    }
+
+    function handleDescriptionEdit(e: React.FocusEvent<HTMLParagraphElement>) {
+        const newDescription = e.currentTarget.textContent || "новое дело";
+        setDescription(newDescription);
+        changeTaskDescription(task.id, newDescription);
+    }
 
     return (
         <div className="task-item">
             <input
                 type="checkbox"
-                checked={task.isDone}
-                onChange={() => changeTaskStatus(task.id, !task.isDone)}
+                checked={isDone}
+                onChange={handleCheckboxChange}
             />
             <p
                 contentEditable
                 suppressContentEditableWarning
                 className="task-description"
-                onBlur={(e) => changeTaskDescription(task.id, e.currentTarget.textContent || "новое дело")}
+                onBlur={handleDescriptionEdit}
             >
                 {task.description}
             </p>
@@ -31,3 +44,4 @@ export default function TaskItem({ task, displayDeleteTask, changeTaskStatus, ch
         </div>
     )
 }
+
